@@ -2323,146 +2323,6 @@ module.exports = function (it, TAG, STATIC) {
 
 /***/ }),
 
-/***/ "1IWx":
-/*!*************************************************!*\
-  !*** ./node_modules/stream-browserify/index.js ***!
-  \*************************************************/
-/*! no static exports found */
-/*! all exports used */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-module.exports = Stream;
-
-var EE = __webpack_require__(/*! events */ "+qE3").EventEmitter;
-var inherits = __webpack_require__(/*! inherits */ "P7XM");
-
-inherits(Stream, EE);
-Stream.Readable = __webpack_require__(/*! readable-stream/readable.js */ "43KI");
-Stream.Writable = __webpack_require__(/*! readable-stream/writable.js */ "LGOv");
-Stream.Duplex = __webpack_require__(/*! readable-stream/duplex.js */ "CWBI");
-Stream.Transform = __webpack_require__(/*! readable-stream/transform.js */ "0XuU");
-Stream.PassThrough = __webpack_require__(/*! readable-stream/passthrough.js */ "wq4j");
-
-// Backwards-compat with node 0.4.x
-Stream.Stream = Stream;
-
-
-
-// old-style streams.  Note that the pipe method (the only relevant
-// part of this class) is overridden in the Readable class.
-
-function Stream() {
-  EE.call(this);
-}
-
-Stream.prototype.pipe = function(dest, options) {
-  var source = this;
-
-  function ondata(chunk) {
-    if (dest.writable) {
-      if (false === dest.write(chunk) && source.pause) {
-        source.pause();
-      }
-    }
-  }
-
-  source.on('data', ondata);
-
-  function ondrain() {
-    if (source.readable && source.resume) {
-      source.resume();
-    }
-  }
-
-  dest.on('drain', ondrain);
-
-  // If the 'end' option is not supplied, dest.end() will be called when
-  // source gets the 'end' or 'close' events.  Only dest.end() once.
-  if (!dest._isStdio && (!options || options.end !== false)) {
-    source.on('end', onend);
-    source.on('close', onclose);
-  }
-
-  var didOnEnd = false;
-  function onend() {
-    if (didOnEnd) return;
-    didOnEnd = true;
-
-    dest.end();
-  }
-
-
-  function onclose() {
-    if (didOnEnd) return;
-    didOnEnd = true;
-
-    if (typeof dest.destroy === 'function') dest.destroy();
-  }
-
-  // don't leave dangling pipes when there are errors.
-  function onerror(er) {
-    cleanup();
-    if (EE.listenerCount(this, 'error') === 0) {
-      throw er; // Unhandled stream error in pipe.
-    }
-  }
-
-  source.on('error', onerror);
-  dest.on('error', onerror);
-
-  // remove all the event listeners that were added.
-  function cleanup() {
-    source.removeListener('data', ondata);
-    dest.removeListener('drain', ondrain);
-
-    source.removeListener('end', onend);
-    source.removeListener('close', onclose);
-
-    source.removeListener('error', onerror);
-    dest.removeListener('error', onerror);
-
-    source.removeListener('end', cleanup);
-    source.removeListener('close', cleanup);
-
-    dest.removeListener('close', cleanup);
-  }
-
-  source.on('end', cleanup);
-  source.on('close', cleanup);
-
-  dest.on('close', cleanup);
-
-  dest.emit('pipe', source);
-
-  // Allow for unix-like usage: A.pipe(B).pipe(C)
-  return dest;
-};
-
-
-/***/ }),
-
 /***/ "1OyB":
 /*!*******************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js ***!
@@ -7996,7 +7856,7 @@ module.exports = TO_STRING_TAG_SUPPORT ? classofRaw : function (it) {
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js because of ./src/.umi-production/umi.ts */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js because of ./src/pages/index.tsx */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/esm/slicedToArray.js because of ./src/.umi-production/umi.ts */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js because of ./node_modules/rc-field-form/es/List.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js because of ./node_modules/rc-field-form/es/Field.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/extends.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/slicedToArray.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/regenerator/index.js (<- Module is not an ECMAScript module) */
@@ -19419,7 +19279,7 @@ function canUseDom() {
 
   var Stream
   try {
-    Stream = __webpack_require__(/*! stream */ "1IWx").Stream
+    Stream = __webpack_require__(/*! stream */ "qAFR").Stream
   } catch (ex) {
     Stream = function () {}
   }
@@ -21828,7 +21688,7 @@ module.exports = function of() {
     , close  : function () { return this.write(null); }
     };
 
-  try        { Stream = __webpack_require__(/*! stream */ "1IWx").Stream; }
+  try        { Stream = __webpack_require__(/*! stream */ "qAFR").Stream; }
   catch (ex) { Stream = function () {}; }
 
   function createStream (opt) { return new CStream(opt); }
@@ -22775,7 +22635,7 @@ $({ target: 'Array', proto: true, forced: [].forEach != forEach }, {
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rc-util/es/Dom/findDOMNode.js because of ./src/.umi-production/umi.ts */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rc-util/es/raf.js because of ./src/.umi-production/umi.ts */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rc-util/es/ref.js because of ./src/.umi-production/umi.ts */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rc-util/es/warning.js because of ./node_modules/rc-field-form/es/List.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rc-util/es/warning.js because of ./node_modules/rc-field-form/es/Field.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/react-dom/index.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/react/index.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js (<- Module uses injected variables (global)) */
@@ -41846,6 +41706,11 @@ var WebSites = () => {
 
 
 /* harmony default export */ var pages = __webpack_exports__["default"] = (() => {
+  Object(react["useEffect"])(() => {
+    chrome.runtime.sendMessage('init', function (response) {
+      console.log(response);
+    });
+  }, []);
   return /*#__PURE__*/react_default.a.createElement(react_default.a.Fragment, null, /*#__PURE__*/react_default.a.createElement(GlobalStyle, null), /*#__PURE__*/react_default.a.createElement(Container, null, /*#__PURE__*/react_default.a.createElement(pages_ToolBar, null), /*#__PURE__*/react_default.a.createElement(pages_WebSites, null)));
 });
 
@@ -58173,6 +58038,146 @@ if (true) {
 
 /***/ }),
 
+/***/ "qAFR":
+/*!********************************************************************************!*\
+  !*** ./node_modules/node-libs-browser/node_modules/stream-browserify/index.js ***!
+  \********************************************************************************/
+/*! no static exports found */
+/*! all exports used */
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+module.exports = Stream;
+
+var EE = __webpack_require__(/*! events */ "+qE3").EventEmitter;
+var inherits = __webpack_require__(/*! inherits */ "P7XM");
+
+inherits(Stream, EE);
+Stream.Readable = __webpack_require__(/*! readable-stream/readable.js */ "43KI");
+Stream.Writable = __webpack_require__(/*! readable-stream/writable.js */ "LGOv");
+Stream.Duplex = __webpack_require__(/*! readable-stream/duplex.js */ "CWBI");
+Stream.Transform = __webpack_require__(/*! readable-stream/transform.js */ "0XuU");
+Stream.PassThrough = __webpack_require__(/*! readable-stream/passthrough.js */ "wq4j");
+
+// Backwards-compat with node 0.4.x
+Stream.Stream = Stream;
+
+
+
+// old-style streams.  Note that the pipe method (the only relevant
+// part of this class) is overridden in the Readable class.
+
+function Stream() {
+  EE.call(this);
+}
+
+Stream.prototype.pipe = function(dest, options) {
+  var source = this;
+
+  function ondata(chunk) {
+    if (dest.writable) {
+      if (false === dest.write(chunk) && source.pause) {
+        source.pause();
+      }
+    }
+  }
+
+  source.on('data', ondata);
+
+  function ondrain() {
+    if (source.readable && source.resume) {
+      source.resume();
+    }
+  }
+
+  dest.on('drain', ondrain);
+
+  // If the 'end' option is not supplied, dest.end() will be called when
+  // source gets the 'end' or 'close' events.  Only dest.end() once.
+  if (!dest._isStdio && (!options || options.end !== false)) {
+    source.on('end', onend);
+    source.on('close', onclose);
+  }
+
+  var didOnEnd = false;
+  function onend() {
+    if (didOnEnd) return;
+    didOnEnd = true;
+
+    dest.end();
+  }
+
+
+  function onclose() {
+    if (didOnEnd) return;
+    didOnEnd = true;
+
+    if (typeof dest.destroy === 'function') dest.destroy();
+  }
+
+  // don't leave dangling pipes when there are errors.
+  function onerror(er) {
+    cleanup();
+    if (EE.listenerCount(this, 'error') === 0) {
+      throw er; // Unhandled stream error in pipe.
+    }
+  }
+
+  source.on('error', onerror);
+  dest.on('error', onerror);
+
+  // remove all the event listeners that were added.
+  function cleanup() {
+    source.removeListener('data', ondata);
+    dest.removeListener('drain', ondrain);
+
+    source.removeListener('end', onend);
+    source.removeListener('close', onclose);
+
+    source.removeListener('error', onerror);
+    dest.removeListener('error', onerror);
+
+    source.removeListener('end', cleanup);
+    source.removeListener('close', cleanup);
+
+    dest.removeListener('close', cleanup);
+  }
+
+  source.on('end', cleanup);
+  source.on('close', cleanup);
+
+  dest.on('close', cleanup);
+
+  dest.emit('pipe', source);
+
+  // Allow for unix-like usage: A.pipe(B).pipe(C)
+  return dest;
+};
+
+
+/***/ }),
+
 /***/ "qCM6":
 /*!******************************************************!*\
   !*** ./node_modules/antd/es/button/style/index.less ***!
@@ -62818,8 +62823,6 @@ function useWebsite() {
       websites = _useState2[0],
       setArticles = _useState2[1];
 
-  console.log('websites: ', websites);
-
   var _useState3 = Object(react["useState"])(0),
       _useState4 = Object(slicedToArray["a" /* default */])(_useState3, 2),
       updateTime = _useState4[0],
@@ -62841,6 +62844,7 @@ function useWebsite() {
     setArticles([...websites, Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, website), {}, {
       feedLink
     })]);
+    setUpdateTime(+new Date());
   };
 
   var setRead = function setRead(webIndex, articleIndex) {
@@ -62891,8 +62895,10 @@ function useWebsite() {
   Object(react["useEffect"])(() => {
     var _chrome;
 
-    // 持久化存储
-    db.setItem('websites', JSON.stringify(websites)); // 计算未读
+    if (updateTime !== 0) {
+      db.setItem('websites', JSON.stringify(websites));
+    } // 计算未读
+
 
     var unRead = 0;
     websites.map(website => {
@@ -62902,10 +62908,9 @@ function useWebsite() {
         }
       });
     });
-    setUnReadCount(unRead); // @ts-ignore
-
+    setUnReadCount(unRead);
     (_chrome = chrome) === null || _chrome === void 0 ? void 0 : _chrome.browserAction.setBadgeText({
-      text: "".concat(unRead)
+      text: unRead ? "".concat(unRead) : ''
     });
   }, [websites.length, updateTime]);
   return {

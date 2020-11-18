@@ -2,12 +2,13 @@
   "private": true,
   "scripts": {
     "start": "umi dev",
-    "build": "COMPRESS=none umi build && npm run cp",
+    "build": "COMPRESS=none umi build && npm run cp && yarn build:bg",
     "out": "webpack ",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
     "cp": "cp ./dist/* ./extension/",
+    "build:bg": "webpack --config webpack.common.js && cp chrome/manifest.json ./extension/",
     "test:coverage": "umi-test --coverage"
   },
   "gitHooks": {
@@ -29,6 +30,7 @@
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.2.25",
     "ahooks": "^2.8.1",
+    "axios": "^0.21.0",
     "dayjs": "^1.9.6",
     "dexie": "^3.0.2",
     "feedme": "^1.2.0",
@@ -38,11 +40,15 @@
     "prettier": "^1.19.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "stream": "^0.0.2",
+    "stream-browserify": "^3.0.0",
     "styled-components": "^5.2.1",
     "styles": "^0.2.1",
+    "ts-loader": "^8.0.11",
     "types": "^0.1.1",
+    "typescript": "^4.0.5",
     "umi": "^3.2.25",
-    "webpack": "^5.4.0",
+    "webpack": "^5.5.0",
     "webpack-cli": "^4.2.0",
     "yorkie": "^2.0.0"
   }

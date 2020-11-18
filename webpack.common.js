@@ -2,12 +2,16 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    background: path.join(__dirname, 'src/background.ts'),
+    background: path.join(__dirname, 'chrome/background.ts'),
   },
   output: {
-    path: path.join(__dirname, 'dist/js'),
+    path: path.join(__dirname, 'extension/'),
     filename: '[name].js',
   },
+  optimization: {
+    minimize: false,
+  },
+
   module: {
     rules: [
       {

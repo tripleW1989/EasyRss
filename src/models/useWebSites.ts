@@ -24,7 +24,7 @@ export interface WebSite {
 }
 export default function useWebsite() {
   const [websites, setArticles] = useState<WebSite[]>([]);
-  console.log('websites: ', websites);
+
   const [updateTime, setUpdateTime] = useState(0);
   const [unReadCount, setUnReadCount] = useState(0);
 
@@ -40,6 +40,7 @@ export default function useWebsite() {
     }
     alert(`${website.title} 添加成功`);
     setArticles([...websites, { ...website, feedLink }]);
+    setUpdateTime(+new Date());
   };
 
   const setRead = (
@@ -86,8 +87,9 @@ export default function useWebsite() {
   }, []);
 
   useEffect(() => {
-    // 持久化存储
-    storage.setItem('websites', JSON.stringify(websites));
+    if (updateTime !== 0) {
+      storage.setItem('websites', JSON.stringify(websites));
+    }
 
     // 计算未读
     let unRead = 0;
@@ -99,7 +101,8 @@ export default function useWebsite() {
       });
     });
     setUnReadCount(unRead);
-    chrome?.browserAction.setBadgeText({ text: `${unRead}` });
+
+    chrome?.browserAction.setBadgeText({ text: unRead ? `${unRead}` : '' });
   }, [websites.length, updateTime]);
 
   return {
