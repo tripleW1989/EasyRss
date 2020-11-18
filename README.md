@@ -14,3 +14,15 @@ Start the dev server,
 ```bash
 $ yarn start
 ```
+
+build
+
+```bash
+$ yarn build
+```
+
+imoprt
+```
+open chrome://extensions
+load the ./extension/*
+```
