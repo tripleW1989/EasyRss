@@ -3,26 +3,31 @@ Chrome Extension, An Easy Rss Reader , Base on React, Umi, Typescript. Have Fun 
 
 ## Getting Started
 
-Install dependencies,
+#### Install dependencies,
 
 ```bash
 $ yarn
 ```
 
-Start the dev server,
+#### Start the dev server,
 
 ```bash
 $ yarn start
 ```
 
-build
+#### build
 
 ```bash
 $ yarn build
 ```
 
-imoprt
+#### imoprt
 ```
 open chrome://extensions
 load the ./extension/*
 ```
+
+## todo
++ Remove The WebSite
++ Add Star
++ Beautify UI
