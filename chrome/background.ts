@@ -33,7 +33,8 @@ const refreshWebSites = () => {
               };
             }
           } catch (e) {
-            alert('输入的地址可能有误');
+            console.error('输入的地址可能有误', e);
+            return web;
           }
         }),
       );
@@ -43,7 +44,8 @@ const refreshWebSites = () => {
 };
 setTimeout(() => {
   refreshWebSites();
-}, 1000 * 60 * 5);
+}, 1000 * 20);
+// }, 1000 * 60 * 5);
 const findTargetArticle = (articles: Article[], url: string) => {
   return articles.find(article => {
     return (article.link as any).href || article.link === url;

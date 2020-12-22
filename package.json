@@ -2,13 +2,11 @@
   "private": true,
   "scripts": {
     "start": "umi dev",
-    "build": "COMPRESS=none umi build && npm run cp && yarn build:bg",
+    "build": "cross-env COMPRESS=none umi build  && yarn build:bg && yarn cp",
     "out": "webpack ",
-    "postinstall": "umi generate tmp",
-    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
-    "cp": "cp ./dist/* ./extension/",
-    "build:bg": "webpack --config webpack.common.js && cp chrome/manifest.json ./extension/",
+    "cp": "xcopy /y .\\dist\\*.* .\\extension\\",
+    "build:bg": "webpack --config webpack.common.js && xcopy chrome\\manifest.json .\\extension\\",
     "test:coverage": "umi-test --coverage"
   },
   "gitHooks": {
@@ -31,6 +29,7 @@
     "@umijs/test": "^3.2.25",
     "ahooks": "^2.8.1",
     "axios": "^0.21.0",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.9.6",
     "dexie": "^3.0.2",
     "feedme": "^1.2.0",
